@@ -1,0 +1,29 @@
+:root {
+  --cream: #fffdf7;
+  --cream-2: #f7f2e6;
+  --lavender: #ba9be7;
+  --lavender-2: #a585dc;
+  --lavender-soft: #e9defa;
+  --mint: #ddf5ee;
+  --red: #e51b23;
+  --red-ink: #b8131a;
+  --yellow: #ffd84d;
+  --yellow-2: #f5c82a;
+  --ink: #171717;
+  --ink-2: #3b3a37;
+  --muted: #6a675f;
+  --line: rgba(23, 23, 23, 0.14);
+
+  --font-display: 'Anton', 'Impact', 'Arial Narrow Bold', sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --gutter: clamp(10px, 1.1vw, 16px);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --header-h: 60px;
+  --maxw: 1240px;
+
+  --shadow-soft: 0 10px 30px -18px rgba(40, 20, 80, 0.45);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --focus: 0 0 0 3px var(--cream), 0 0 0 6px var(--ink);
+}

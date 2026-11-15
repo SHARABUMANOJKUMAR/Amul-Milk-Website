@@ -1,0 +1,38 @@
+{
+  "peek": {
+    "w": 225,
+    "h": 280,
+    "loop": true,
+    "hd": true
+  },
+  "sit": {
+    "w": 220,
+    "h": 400,
+    "loop": true,
+    "hd": true
+  },
+  "point": {
+    "w": 233,
+    "h": 400,
+    "loop": true,
+    "hd": true
+  },
+  "chef": {
+    "w": 175,
+    "h": 400,
+    "loop": true,
+    "hd": true
+  },
+  "wave": {
+    "w": 266,
+    "h": 400,
+    "loop": true,
+    "hd": true
+  },
+  "tray": {
+    "w": 220,
+    "h": 400,
+    "loop": true,
+    "hd": true
+  }
+}
