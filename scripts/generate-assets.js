@@ -518,43 +518,226 @@ function getProductSvg(id, w, h) {
 }
 
 function getCartonHandSvg(w, h) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-    <g transform="translate(760, 560) rotate(14)">
-      <rect x="-150" y="-180" width="300" height="520" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="4" />
-      <rect x="-150" y="-180" width="300" height="150" fill="#1E8FD8" />
-      <rect x="-150" y="285" width="300" height="55" fill="#E51B23" />
-      <ellipse cx="120" cy="310" rx="26" ry="18" fill="#1E8FD8" stroke="#FFF" stroke-width="2" />
-      <text x="0" y="-85" text-anchor="middle" font-family="'Anton', sans-serif" font-size="52" fill="#FFFFFF">Amul</text>
-      <text x="0" y="80" text-anchor="middle" font-family="'Anton', sans-serif" font-size="44" fill="#1E8FD8">TAAZA</text>
-      <ellipse cx="-100" cy="80" rx="42" ry="78" fill="#FED7AA" stroke="#FDBA74" stroke-width="3" />
+  // Always use reference coordinate space 1448x1086 with exact GEOMETRY:
+  // Pivot at (760, 560), Opening at (1094, 880), Lip Normal [0.72, 0.69]
+  // Angle from pivot to opening: atan2(320, 334) = 43.784 degrees. Distance = 462.55px.
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" width="${w}" height="${h}">
+    <defs>
+      <linearGradient id="cartonBodyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FFFFFF" />
+        <stop offset="60%" stop-color="#FBFBFB" />
+        <stop offset="100%" stop-color="#F0EFEA" />
+      </linearGradient>
+      <linearGradient id="taazaBlueGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#38BDF8" />
+        <stop offset="30%" stop-color="#1E8FD8" />
+        <stop offset="100%" stop-color="#0284C7" />
+      </linearGradient>
+      <linearGradient id="taazaSideBlue" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0F5685" />
+        <stop offset="100%" stop-color="#083344" />
+      </linearGradient>
+      <filter id="cartonShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="-12" dy="16" stdDeviation="18" flood-color="#171717" flood-opacity="0.22" />
+      </filter>
+      <linearGradient id="skinGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FED7AA" />
+        <stop offset="65%" stop-color="#FDBA74" />
+        <stop offset="100%" stop-color="#FB923C" />
+      </linearGradient>
+    </defs>
+
+    <!-- Carton & Hand Assembly anchored at Pivot (760, 560) rotated along pour axis (43.784deg) -->
+    <g transform="translate(760, 560) rotate(43.784)" filter="url(#cartonShadow)">
+      <!-- 3D Isometric Side Face (Top/Side Depth) -->
+      <polygon points="-360,-175 -320,-115 360,-115 320,-175" fill="url(#taazaSideBlue)" />
+      <polygon points="320,-175 360,-115 440,-115 400,-175" fill="#083344" />
+
+      <!-- Carton Front Face Body (x: -320 to 360, y: -115 to 115) -->
+      <rect x="-320" y="-115" width="680" height="230" rx="8" fill="url(#cartonBodyGrad)" stroke="#CBD5E1" stroke-width="2" />
+
+      <!-- Blue Section (Amul Taaza) -->
+      <path d="M 100 -115 L 360 -115 L 360 115 L 100 115 Z" fill="url(#taazaBlueGrad)" />
+
+      <!-- Slanted Gable Peak towards Spout -->
+      <polygon points="360,-115 445,-115 462.5,0 360,0" fill="#0284C7" />
+      <polygon points="360,0 462.5,0 445,115 360,115" fill="#0369A1" />
+      <line x1="360" y1="0" x2="462.5" y2="0" stroke="#FFFFFF" stroke-width="2" opacity="0.6" />
+
+      <!-- Red Base Stripe (Bottom of Carton) -->
+      <rect x="-320" y="-115" width="75" height="230" fill="#E51B23" rx="4" />
+      <text x="-280" y="8" text-anchor="middle" font-family="'Anton', sans-serif" font-size="28" fill="#FFFFFF">1 L</text>
+
+      <!-- Amul Branding on Blue Section -->
+      <g transform="translate(230, 0)">
+        <text x="0" y="-30" text-anchor="middle" font-family="'Anton', sans-serif" font-size="44" fill="#FFFFFF" letter-spacing="1">Amul</text>
+        <text x="0" y="-10" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF" opacity="0.9">THE TASTE OF INDIA</text>
+        <text x="0" y="42" text-anchor="middle" font-family="'Anton', sans-serif" font-size="42" fill="#FDE047" letter-spacing="1.5">TAAZA</text>
+        <text x="0" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#E0F2FE" letter-spacing="0.5">TONED MILK · UHT</text>
+      </g>
+
+      <!-- Quality & Nutrition on White Body -->
+      <g transform="translate(-110, 0)">
+        <rect x="-80" y="-85" width="160" height="170" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5" />
+        <text x="0" y="-50" text-anchor="middle" font-family="'Anton', sans-serif" font-size="26" fill="#1E8FD8">Amul TAAZA</text>
+        <text x="0" y="-28" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700" fill="#64748B">FRESH &amp; PURE</text>
+        <line x1="-60" y1="-15" x2="60" y2="-15" stroke="#E2E8F0" stroke-width="1" />
+        <text x="0" y="10" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#0284C7">FAT 3.0% MIN</text>
+        <text x="0" y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#475569">SNF 8.5% MIN</text>
+        <text x="0" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8.5" font-weight="600" fill="#16A34A">NO PRESERVATIVES</text>
+      </g>
+
+      <!-- Natural Hand Grip holding Carton at Pivot (0, 0) -->
+      <!-- Arm entering from top-left -->
+      <path d="M -180 -150 C -220 -230 -260 -300 -330 -340 L -250 -380 C -170 -300 -110 -200 -50 -120 Z" fill="url(#skinGrad)" />
+      <!-- Palm / Thumb grasping front of carton -->
+      <ellipse cx="-20" cy="-35" rx="55" ry="32" fill="url(#skinGrad)" stroke="#FDBA74" stroke-width="2.5" transform="rotate(-15 -20 -35)" />
+      <ellipse cx="14" cy="-42" rx="14" ry="10" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5" />
+      <!-- Fingers wrapped along bottom edge -->
+      <path d="M -50 115 C -30 148 20 148 40 115" fill="url(#skinGrad)" stroke="#FDBA74" stroke-width="2" />
+      <path d="M -120 115 C -100 145 -60 145 -40 115" fill="url(#skinGrad)" stroke="#FDBA74" stroke-width="2" />
+
+      <!-- POUR SPOUT CAP EXACTLY AT (462.55, 0) -> WORLD (1094, 880) -->
+      <ellipse cx="456" cy="0" rx="20" ry="16" fill="#0284C7" stroke="#FFFFFF" stroke-width="2.5" />
+      <ellipse cx="462.55" cy="0" rx="15" ry="12" fill="#0369A1" stroke="#38BDF8" stroke-width="1.5" />
+      <ellipse cx="462.55" cy="0" rx="10" ry="8" fill="#0C4A6E" />
+      <!-- Glossy plastic highlight on spout lip -->
+      <path d="M 454 -10 A 15 12 0 0 1 472 -2" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
     </g>
   </svg>`;
 }
 
 function getGlassHandSvg(w, h) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-    <path d="M 177 277 L 211 818 L 579 818 L 604 277 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.5)" stroke-width="4" />
-    <ellipse cx="390.5" cy="277.5" rx="213.5" ry="46.5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="4" />
-    <ellipse cx="395" cy="800" rx="170" ry="24" fill="rgba(255,255,255,0.25)" />
+  // Always use reference coordinate space 1448x1086 with exact GEOMETRY:
+  // Rim outer: cx: 390.5, cy: 277.5, rx: 213.5, ry: 46.5
+  // Rim inner: cx: 391, cy: 277.5, rx: 205, ry: 41
+  // Inner bottom: cx: 395, cy: 722, rx: 184, ry: 29
+  // Base bottom: y: 818 (cx: 395, cy: 818, rx: 189.5, ry: 28)
+  // Left outer wall: (177, 277.5) to (209.4, 818)
+  // Right outer wall: (604, 277.5) to (587.8, 818)
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" width="${w}" height="${h}">
+    <defs>
+      <linearGradient id="glassBodyGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.28)" />
+        <stop offset="8%" stop-color="rgba(255,255,255,0.14)" />
+        <stop offset="50%" stop-color="rgba(255,255,255,0.06)" />
+        <stop offset="92%" stop-color="rgba(255,255,255,0.14)" />
+        <stop offset="100%" stop-color="rgba(255,255,255,0.28)" />
+      </linearGradient>
+      <linearGradient id="thickBaseGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.18)" />
+        <stop offset="50%" stop-color="rgba(235,245,255,0.32)" />
+        <stop offset="100%" stop-color="rgba(215,230,245,0.48)" />
+      </linearGradient>
+      <filter id="glassContactShadow" x="-10%" y="-10%" width="120%" height="130%">
+        <feGaussianBlur stdDeviation="16" />
+      </filter>
+    </defs>
+
+    <!-- Table Contact Shadow underneath heavy glass base -->
+    <ellipse cx="395" cy="824" rx="205" ry="32" fill="rgba(23,23,23,0.16)" filter="url(#glassContactShadow)" />
+
+    <!-- Glass Outer Body Silhouette -->
+    <path d="
+      M 177 277.5
+      L 209.4 818
+      A 189.5 28 0 0 0 587.8 818
+      L 604 277.5
+      A 213.5 46.5 0 0 0 177 277.5
+      Z"
+      fill="url(#glassBodyGrad)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="2.5"
+    />
+
+    <!-- Heavy Solid Glass Base (y: 722 inner bottom to y: 818 base bottom) -->
+    <path d="
+      M 211 722
+      A 184 29 0 0 0 579 722
+      L 587.8 818
+      A 189.5 28 0 0 1 209.4 818
+      Z"
+      fill="url(#thickBaseGrad)"
+      stroke="rgba(255,255,255,0.35)"
+      stroke-width="1.5"
+    />
+
+    <!-- Inner Bottom Floor Ellipse -->
+    <ellipse cx="395" cy="722" rx="184" ry="29" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+
+    <!-- Base Bottom Rim Ring -->
+    <ellipse cx="395" cy="818" rx="189.5" ry="28" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2" />
+
+    <!-- Back Half of Rim (Upper Arc) visible through empty glass -->
+    <path d="M 177 277.5 A 213.5 46.5 0 0 1 604 277.5" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" />
+    <path d="M 186 277.5 A 205 41 0 0 1 596 277.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+
+    <!-- Hand holding glass (Fingers wrapping behind the glass from right) -->
+    <g opacity="0.6">
+      <ellipse cx="585" cy="565" rx="34" ry="18" fill="#FDBA74" stroke="#FB923C" stroke-width="1.5" />
+      <ellipse cx="575" cy="625" rx="36" ry="18" fill="#FDBA74" stroke="#FB923C" stroke-width="1.5" />
+      <ellipse cx="560" cy="685" rx="34" ry="18" fill="#FDBA74" stroke="#FB923C" stroke-width="1.5" />
+      <rect x="635" y="520" width="160" height="180" rx="24" fill="#FED7AA" stroke="#FDBA74" stroke-width="2" />
+    </g>
   </svg>`;
 }
 
 function getGlassSheenSvg(w, h) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-    <path d="M 205 310 L 235 780" stroke="rgba(255,255,255,0.4)" stroke-width="16" stroke-linecap="round" />
+  // Always use reference coordinate space 1448x1086 with exact GEOMETRY:
+  // Rendered over milk liquid with source-atop to give realistic glossy glass reflections
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" width="${w}" height="${h}">
+    <defs>
+      <linearGradient id="sheenLeftGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.6)" />
+        <stop offset="50%" stop-color="rgba(255,255,255,0.3)" />
+        <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+      </linearGradient>
+    </defs>
+    <!-- Left Specular Reflection Band following left wall taper -->
+    <path d="M 200 300 L 226 760" stroke="url(#sheenLeftGrad)" stroke-width="18" stroke-linecap="round" />
+    <!-- Bright Pinpoint Reflection Core -->
+    <path d="M 205 315 L 228 745" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.85" />
+    <!-- Right Specular Reflection Band following right wall taper -->
+    <path d="M 584 300 L 572 760" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity="0.32" />
   </svg>`;
 }
 
 function getGlassFrontSvg(w, h) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-    <path d="M 177 277.5 A 213.5 46.5 0 0 0 604 277.5" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="5" />
+  // Always use reference coordinate space 1448x1086 with exact GEOMETRY:
+  // Drawn ON TOP of the poured milk: front rim and thumb polygon holding the glass
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1448 1086" width="${w}" height="${h}">
+    <defs>
+      <linearGradient id="thumbGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FED7AA" />
+        <stop offset="60%" stop-color="#FDBA74" />
+        <stop offset="100%" stop-color="#FB923C" />
+      </linearGradient>
+      <filter id="thumbShadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="-4" dy="6" stdDeviation="6" flood-color="#7C2D12" flood-opacity="0.25" />
+      </filter>
+    </defs>
+
+    <!-- Front Half of Outer Rim (Lower Arc in front of milk) -->
+    <path d="M 177 277.5 A 213.5 46.5 0 0 0 604 277.5" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="4" />
+    <path d="M 186 277.5 A 205 41 0 0 0 596 277.5" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" />
+
+    <!-- Thumb in front of glass matching GEOMETRY.glass.thumbPolygon exactly -->
+    <polygon
+      filter="url(#thumbShadow)"
+      points="424,556 430,540 443,523 460,511 484,503 515,497 550,492 590,487 640,482 640,614 592,604 560,608 525,612 490,608 463,598 443,585 430,571"
+      fill="url(#thumbGrad)"
+      stroke="#FDBA74"
+      stroke-width="2"
+    />
+    <!-- Thumb nail & cuticle detail -->
+    <ellipse cx="452" cy="548" rx="15" ry="11" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="1.5" transform="rotate(-25 452 548)" />
+    <path d="M 482 522 Q 487 544 492 566" fill="none" stroke="#F59E0B" stroke-width="1.8" opacity="0.6" />
   </svg>`;
 }
 
 function getPosterFgSvg(w, h) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
-    <ellipse cx="${w * 0.48}" cy="${h * 0.65}" rx="140" ry="20" fill="#FFFDF7" opacity="0.9" />
-  </svg>`;
+  // Transparent foreground placeholder - no stray ellipses
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"></svg>`;
 }
 
 /* ======================================================== */

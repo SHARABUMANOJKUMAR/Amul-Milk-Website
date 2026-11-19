@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-11-19T21:17:10+05:30",
+  "last_updated": "2026-11-19T21:55:00+05:30",
   "completed": [
     "Installed project dependencies with npm",
     "Verified build with tsc --noEmit and vite build",
@@ -12,12 +12,14 @@
     "Generated all 35 missing high-resolution WebP images across moments, hero layers, gold reveal, product packs, story scenes, and milk drip edges",
     "Added attractive, comprehensive README.md with UI showcases, animations breakdown, and architecture documentation",
     "Added watermark 'Developed by Shaivika, IIT Technologies' below footer",
-    "Configured git remote to https://github.com/SHARABUMANOJKUMAR/Amul-Milk-Website.git and successfully pushed to branch main"
+    "Configured git remote to https://github.com/SHARABUMANOJKUMAR/Amul-Milk-Website.git and successfully pushed to branch main",
+    "Fixed milk pouring alignment into the glass: resolved coordinate space mismatch where 800-variant SVG images distorted geometry, aligned carton spout exactly to (1094, 880) to match physics stream origin, aligned glass inner cavity and walls to GEOMETRY reference, and removed spurious carton top-edge lift offset"
   ],
   "in_progress": [],
   "pending": [],
   "decisions": [
-    "Set origin remote to https://github.com/SHARABUMANOJKUMAR/Amul-Milk-Website.git and pushed branch main"
+    "Set origin remote to https://github.com/SHARABUMANOJKUMAR/Amul-Milk-Website.git and pushed branch main",
+    "Enforce viewBox='0 0 1448 1086' across all hero layer SVGs regardless of rasterization size to ensure 100% pixel-perfect sub-pixel registration between canvas physics and image layers"
   ],
   "blockers": []
 }

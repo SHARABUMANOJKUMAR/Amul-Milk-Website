@@ -30,42 +30,53 @@ function createProceduralTexture(type: 'bg' | 'carton' | 'glass' | 'sheen' | 'fr
     const ctx = canvas.getContext('2d')!;
     ctx.save();
     ctx.translate(760, 560);
-    ctx.rotate((12 * Math.PI) / 180);
-    const cw = 300;
-    const ch = 520;
-    const cx = -cw / 2;
-    const cy = -ch / 2 + 50;
-    // Carton Box Body
+    ctx.rotate((43.784 * Math.PI) / 180);
+    // Carton Front Face Body (x: -320 to 360, y: -115 to 115)
     ctx.fillStyle = '#FFFFFF';
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(cx, cy, cw, ch, 16);
-    else ctx.rect(cx, cy, cw, ch);
-    ctx.fill();
-    // Blue top band (Amul Taaza)
+    ctx.fillRect(-320, -115, 680, 230);
+    // Blue section (Amul Taaza)
     ctx.fillStyle = '#1E8FD8';
-    ctx.fillRect(cx, cy, cw, 150);
+    ctx.fillRect(100, -115, 260, 230);
+    // Slanted gable towards spout
+    ctx.fillStyle = '#0284C7';
+    ctx.beginPath();
+    ctx.moveTo(360, -115);
+    ctx.lineTo(445, -115);
+    ctx.lineTo(462.55, 0);
+    ctx.lineTo(360, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#0369A1';
+    ctx.beginPath();
+    ctx.moveTo(360, 0);
+    ctx.lineTo(462.55, 0);
+    ctx.lineTo(445, 115);
+    ctx.lineTo(360, 115);
+    ctx.closePath();
+    ctx.fill();
     // Red bottom band
     ctx.fillStyle = '#E51B23';
-    ctx.fillRect(cx, cy + ch - 55, cw, 55);
-    // Spout cap near opening (1094, 880)
-    ctx.fillStyle = '#1E8FD8';
+    ctx.fillRect(-320, -115, 75, 230);
+    // Spout cap centered at (462.55, 0) -> World (1094, 880)
+    ctx.fillStyle = '#0284C7';
     ctx.beginPath();
-    ctx.ellipse(cx + cw - 28, cy + ch - 30, 26, 18, 0.4, 0, Math.PI * 2);
+    ctx.ellipse(456, 0, 20, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0369A1';
+    ctx.beginPath();
+    ctx.ellipse(462.55, 0, 14, 11, 0, 0, Math.PI * 2);
     ctx.fill();
     // Brand Text
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 40px sans-serif';
-    ctx.fillText('Amul', cx + 24, cy + 65);
-    ctx.fillStyle = '#E51B23';
-    ctx.font = 'bold 36px sans-serif';
-    ctx.fillText('TAAZA', cx + 24, cy + 240);
-    ctx.fillStyle = '#6A675F';
-    ctx.font = '22px sans-serif';
-    ctx.fillText('Toned Milk · 1 L', cx + 24, cy + 285);
+    ctx.font = 'bold 44px sans-serif';
+    ctx.fillText('Amul', 230, -30);
+    ctx.fillStyle = '#FDE047';
+    ctx.font = 'bold 38px sans-serif';
+    ctx.fillText('TAAZA', 230, 42);
     // Hand holding carton
     ctx.fillStyle = '#FED7AA';
     ctx.beginPath();
-    ctx.ellipse(cx + 42, cy + 260, 42, 78, 0.2, 0, Math.PI * 2);
+    ctx.ellipse(-20, -35, 55, 32, -0.26, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   } else if (type === 'glass') {
@@ -76,21 +87,26 @@ function createProceduralTexture(type: 'bg' | 'carton' | 'glass' | 'sheen' | 'fr
     const ib = { cx: 395, cy: 722, rx: 184, ry: 29 };
     const baseBottom = 818;
     ctx.save();
+    // Glass outer silhouette
     ctx.beginPath();
+    ctx.moveTo(177, 277.5);
+    ctx.lineTo(209.4, baseBottom);
+    ctx.ellipse(395, baseBottom, 189.5, 28, 0, 0, Math.PI, false);
+    ctx.lineTo(604, 277.5);
     ctx.ellipse(ro.cx, ro.cy, ro.rx, ro.ry, 0, 0, Math.PI, false);
-    ctx.lineTo(ib.cx + ib.rx * 1.05, baseBottom);
-    ctx.ellipse(ib.cx, baseBottom, ib.rx * 0.95, ib.ry * 0.9, 0, 0, Math.PI, false);
-    ctx.lineTo(ro.cx - ro.rx, ro.cy);
     ctx.closePath();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
     ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
     ctx.stroke();
-    // Glass heavy base
+    // Solid heavy base
     ctx.beginPath();
-    ctx.ellipse(ib.cx, baseBottom - 20, ib.rx * 0.88, ib.ry * 0.8, 0, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.26)';
+    ctx.ellipse(ib.cx, ib.cy, ib.rx, ib.ry, 0, 0, Math.PI, false);
+    ctx.lineTo(587.8, baseBottom);
+    ctx.ellipse(395, baseBottom, 189.5, 28, 0, Math.PI, 0, true);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
     ctx.fill();
     ctx.restore();
   } else if (type === 'sheen') {
@@ -99,10 +115,16 @@ function createProceduralTexture(type: 'bg' | 'carton' | 'glass' | 'sheen' | 'fr
     const ctx = canvas.getContext('2d')!;
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(205, 300);
-    ctx.lineTo(235, 780);
-    ctx.lineWidth = 14;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.36)';
+    ctx.moveTo(200, 300);
+    ctx.lineTo(226, 760);
+    ctx.lineWidth = 16;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(584, 300);
+    ctx.lineTo(572, 760);
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
     ctx.stroke();
     ctx.restore();
   } else if (type === 'front') {
@@ -113,6 +135,17 @@ function createProceduralTexture(type: 'bg' | 'carton' | 'glass' | 'sheen' | 'fr
     ctx.beginPath();
     ctx.ellipse(390.5, 277.5, 213.5, 46.5, 0, 0, Math.PI);
     ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+    ctx.stroke();
+    // Front thumb
+    ctx.fillStyle = '#FED7AA';
+    ctx.beginPath();
+    ctx.moveTo(424, 556);
+    const pts = [[430, 540], [443, 523], [460, 511], [484, 503], [515, 497], [550, 492], [590, 487], [640, 482], [640, 614], [592, 604], [560, 608], [525, 612], [490, 608], [463, 598], [443, 585], [430, 571]];
+    for (const [x, y] of pts) ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.68)';
     ctx.stroke();
     ctx.restore();

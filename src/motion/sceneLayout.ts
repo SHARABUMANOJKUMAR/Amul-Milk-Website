@@ -111,17 +111,7 @@ export function computeSceneLayout(w: number, h: number): SceneLayout {
     pivot,
     angle,
   };
-  const cutSamples: [number, number][] = [];
-  for (let y = 0; y <= 470; y += 20) cutSamples.push([0, y]);
-  for (let x = 0; x <= 420; x += 20) cutSamples.push([x, 0]);
-  let lift = 0;
-  for (const a of [angle, angle + POUR.restAngle, angle + POUR.returnAngle]) {
-    for (const p of cutSamples) {
-      const sp = cartonPoint(carton, p, a);
-      if (sp.x > -2 && sp.y > -2) lift = Math.max(lift, sp.y + 3);
-    }
-  }
-  carton.ty -= lift;
+  // Lift offset removed: transparent SVG assets keep opening exactly at openTarget without top cropping
 
   let s7 = preset.glass.scale * k;
   const rim = { x: preset.glass.rim[0] * w, y: preset.glass.rim[1] * h };
