@@ -3,6 +3,7 @@ import { products, productSrcSet, type Product, type ProductId } from '../data/p
 import { productSection } from '../data/siteContent';
 import { useRevealOnce } from '../hooks/motion';
 import { AmulGirl } from './AmulGirl';
+import { AmulPackVector } from './AmulPackVector';
 
 interface GridProps {
   selected: ProductId | null;
@@ -22,6 +23,7 @@ function ProductCard({
   onExplore: () => void;
   onPoint: (index: number) => void;
 }) {
+  const [imgFailed, setImgFailed] = useState(false);
   const h = `calc(var(--pack-h) * ${product.relativeHeight})`;
   return (
     <li
@@ -33,17 +35,22 @@ function ProductCard({
     >
       <div className="product-card__reveal">
         <div className="product-card__lift">
-          <img
-            className="product-card__img"
-            src={`${product.image.base}-480.webp`}
-            srcSet={productSrcSet(product.image.base)}
-            width={product.image.width}
-            height={product.image.height}
-            style={{ height: h }}
-            alt={product.image.alt}
-            loading="lazy"
-            decoding="async"
-          />
+          {imgFailed ? (
+            <AmulPackVector product={product} style={{ height: h }} />
+          ) : (
+            <img
+              className="product-card__img"
+              src={`${product.image.base}-480.webp`}
+              srcSet={productSrcSet(product.image.base)}
+              width={product.image.width}
+              height={product.image.height}
+              style={{ height: h }}
+              alt={product.image.alt}
+              loading="lazy"
+              decoding="async"
+              onError={() => setImgFailed(true)}
+            />
+          )}
         </div>
       </div>
       <div className="product-card__shadow" aria-hidden="true" />
@@ -122,13 +129,7 @@ export function ProductDetails({ product, loading, focusKey, onClose }: DetailsP
       {product && (
         <div className="details__inner" key={product.id} style={{ ['--accent' as string]: product.accent }}>
           <div className="details__media">
-            <img
-              src={`${product.image.base}-900.webp`}
-              width={product.image.width}
-              height={product.image.height}
-              alt={product.image.alt}
-              style={{ height: `calc(var(--details-pack-h) * ${product.relativeHeight})` }}
-            />
+            <AmulPackVector product={product} style={{ height: `calc(var(--details-pack-h) * ${product.relativeHeight})` }} />
           </div>
           <div className="details__body">
             <p className="details__eyebrow">{product.category}</p>

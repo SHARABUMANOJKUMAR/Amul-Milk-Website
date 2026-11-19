@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 64" width="160" height="64" fill="none">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#171717" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  <!-- Amul Iconic Wordmark -->
+  <g filter="url(#shadow)">
+    <!-- Letter 'A' -->
+    <path d="M14 50 L26 14 C27.5 9 32 9 33.5 14 L46 50 C47 53 43.5 54 41 51 L36 37 L23 37 L19 51 C17 54 12.5 53 14 50 Z M26 29 L33.5 29 L29.8 17 Z" fill="#E51B23" />
+    <!-- Letter 'm' -->
+    <path d="M50 25 C50 22 53 22 54.5 25 L55 50 C55 53 51 53 51 50 L51 32 C53 26 62 25 64 32 L64 50 C64 53 60 53 60 50 L60 32 C62 26 71 25 73 32 L73 50 C73 53 69 53 69 50 L69 30 C69 22 62 21 57 24 C55 21 50 21 47 24 L47 50 C47 53 43 53 43 50 L43 25 C43 22 47 22 49 25 Z" fill="#E51B23" />
+    <!-- Letter 'u' -->
+    <path d="M80 25 C80 22 84 22 85 25 L85 41 C86 46 93 47 96 41 L96 25 C96 22 100 22 101 25 L101 42 C101 51 89 53 84 45 L84 50 C84 53 80 53 80 50 Z" fill="#E51B23" />
+    <!-- Letter 'l' -->
+    <path d="M109 10 C109 7 113.5 7 114.5 10 L114.5 45 C115.5 49 119 49 122 47 C124 45.5 125 48 123 50.5 C118 54 110 53 109 46 Z" fill="#E51B23" />
+    <!-- Droplet dot accent -->
+    <path d="M136 28 C136 28 130 36 130 40 C130 43.3 132.7 46 136 46 C139.3 46 142 43.3 142 40 C142 36 136 28 136 28 Z" fill="#E51B23" />
+  </g>
+  <!-- Tagline: The Taste of India -->
+  <text x="76" y="60" text-anchor="middle" font-family="'Inter Variable', 'Inter', system-ui, sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.8" fill="#171717" opacity="0.85">THE TASTE OF INDIA</text>
+</svg>

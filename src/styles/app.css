@@ -1204,6 +1204,22 @@ html[data-motion='off'] .gold__stage .gold__drops {
   color: var(--muted);
   max-width: 760px;
 }
+.site-footer__watermark {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.site-footer__watermark strong {
+  color: var(--ink);
+  font-weight: 700;
+}
 
 @media (max-width: 1100px) {
   .site-nav__side {

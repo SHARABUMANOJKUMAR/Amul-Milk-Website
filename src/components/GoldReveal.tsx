@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { productById } from '../data/products';
 import { goldReveal } from '../data/siteContent';
 import { useInView, useMotion } from '../hooks/motion';
 import { AmulGirl } from './AmulGirl';
+import { AmulPackVector } from './AmulPackVector';
 
 export const GOLD_VIDEO: { webm?: string; mp4: string; hd?: { webm?: string; mp4: string } } | null = {
   webm: '/assets/gold/gold-reveal.webm',
@@ -17,6 +19,7 @@ export function GoldReveal({ onExplore }: { onExplore: () => void }) {
   const [run, setRun] = useState(0);
   const [played, setPlayed] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [posterFailed, setPosterFailed] = useState(false);
   const useVideo = !!GOLD_VIDEO && !videoFailed;
   const [hd, setHd] = useState(false);
   useEffect(() => {
@@ -87,17 +90,24 @@ export function GoldReveal({ onExplore }: { onExplore: () => void }) {
             </video>
           ) : (
             <div className="gold__layered">
-              <img
-                className="gold__media gold__turn"
-                src="/assets/gold/poster-720.webp"
-                srcSet="/assets/gold/poster-720.webp 720w, /assets/gold/poster-1086.webp 1086w"
-                sizes="(max-width: 860px) 90vw, 44vw"
-                width={1086}
-                height={1448}
-                alt={goldReveal.posterAlt}
-                loading="lazy"
-                decoding="async"
-              />
+              {posterFailed ? (
+                <div className="gold__media gold__turn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                  <AmulPackVector product={productById('gold')} style={{ maxHeight: '88%' }} />
+                </div>
+              ) : (
+                <img
+                  className="gold__media gold__turn"
+                  src="/assets/gold/poster-720.webp"
+                  srcSet="/assets/gold/poster-720.webp 720w, /assets/gold/poster-1086.webp 1086w"
+                  sizes="(max-width: 860px) 90vw, 44vw"
+                  width={1086}
+                  height={1448}
+                  alt={goldReveal.posterAlt}
+                  loading="lazy"
+                  decoding="async"
+                  onError={() => setPosterFailed(true)}
+                />
+              )}
               <span className="gold__sheen" aria-hidden="true" />
               <svg className="gold__drops" viewBox="0 0 100 133" aria-hidden="true">
                 <ellipse cx="14" cy="96" rx="2.6" ry="1.9" />

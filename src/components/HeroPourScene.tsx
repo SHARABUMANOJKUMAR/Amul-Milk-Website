@@ -10,12 +10,126 @@ import { LiquidRibbon } from './LiquidRibbon';
 
 type AssetState = 'loading' | 'ready' | 'failed';
 
-const loadImage = (src: string) =>
-  new Promise<HTMLImageElement>((resolve, reject) => {
+function createProceduralTexture(type: 'bg' | 'carton' | 'glass' | 'sheen' | 'front'): HTMLImageElement {
+  const canvas = document.createElement('canvas');
+  if (type === 'bg') {
+    canvas.width = 1672;
+    canvas.height = 880;
+    const ctx = canvas.getContext('2d')!;
+    const grad = ctx.createLinearGradient(0, 0, 0, 880);
+    grad.addColorStop(0, '#FFFDF7');
+    grad.addColorStop(0.65, '#F7F2E6');
+    grad.addColorStop(1, '#EDE5D2');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1672, 880);
+    ctx.fillStyle = 'rgba(23, 23, 23, 0.04)';
+    ctx.fillRect(0, 560, 1672, 320);
+  } else if (type === 'carton') {
+    canvas.width = 1448;
+    canvas.height = 1086;
+    const ctx = canvas.getContext('2d')!;
+    ctx.save();
+    ctx.translate(760, 560);
+    ctx.rotate((12 * Math.PI) / 180);
+    const cw = 300;
+    const ch = 520;
+    const cx = -cw / 2;
+    const cy = -ch / 2 + 50;
+    // Carton Box Body
+    ctx.fillStyle = '#FFFFFF';
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(cx, cy, cw, ch, 16);
+    else ctx.rect(cx, cy, cw, ch);
+    ctx.fill();
+    // Blue top band (Amul Taaza)
+    ctx.fillStyle = '#1E8FD8';
+    ctx.fillRect(cx, cy, cw, 150);
+    // Red bottom band
+    ctx.fillStyle = '#E51B23';
+    ctx.fillRect(cx, cy + ch - 55, cw, 55);
+    // Spout cap near opening (1094, 880)
+    ctx.fillStyle = '#1E8FD8';
+    ctx.beginPath();
+    ctx.ellipse(cx + cw - 28, cy + ch - 30, 26, 18, 0.4, 0, Math.PI * 2);
+    ctx.fill();
+    // Brand Text
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 40px sans-serif';
+    ctx.fillText('Amul', cx + 24, cy + 65);
+    ctx.fillStyle = '#E51B23';
+    ctx.font = 'bold 36px sans-serif';
+    ctx.fillText('TAAZA', cx + 24, cy + 240);
+    ctx.fillStyle = '#6A675F';
+    ctx.font = '22px sans-serif';
+    ctx.fillText('Toned Milk · 1 L', cx + 24, cy + 285);
+    // Hand holding carton
+    ctx.fillStyle = '#FED7AA';
+    ctx.beginPath();
+    ctx.ellipse(cx + 42, cy + 260, 42, 78, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  } else if (type === 'glass') {
+    canvas.width = 1448;
+    canvas.height = 1086;
+    const ctx = canvas.getContext('2d')!;
+    const ro = { cx: 390.5, cy: 277.5, rx: 213.5, ry: 46.5 };
+    const ib = { cx: 395, cy: 722, rx: 184, ry: 29 };
+    const baseBottom = 818;
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(ro.cx, ro.cy, ro.rx, ro.ry, 0, 0, Math.PI, false);
+    ctx.lineTo(ib.cx + ib.rx * 1.05, baseBottom);
+    ctx.ellipse(ib.cx, baseBottom, ib.rx * 0.95, ib.ry * 0.9, 0, 0, Math.PI, false);
+    ctx.lineTo(ro.cx - ro.rx, ro.cy);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.stroke();
+    // Glass heavy base
+    ctx.beginPath();
+    ctx.ellipse(ib.cx, baseBottom - 20, ib.rx * 0.88, ib.ry * 0.8, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.26)';
+    ctx.fill();
+    ctx.restore();
+  } else if (type === 'sheen') {
+    canvas.width = 1448;
+    canvas.height = 1086;
+    const ctx = canvas.getContext('2d')!;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(205, 300);
+    ctx.lineTo(235, 780);
+    ctx.lineWidth = 14;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.36)';
+    ctx.stroke();
+    ctx.restore();
+  } else if (type === 'front') {
+    canvas.width = 1448;
+    canvas.height = 1086;
+    const ctx = canvas.getContext('2d')!;
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(390.5, 277.5, 213.5, 46.5, 0, 0, Math.PI);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.68)';
+    ctx.stroke();
+    ctx.restore();
+  }
+  const img = new Image();
+  img.src = canvas.toDataURL();
+  return img;
+}
+
+const loadImage = (src: string, fallbackType: 'bg' | 'carton' | 'glass' | 'sheen' | 'front') =>
+  new Promise<HTMLImageElement>((resolve) => {
     const img = new Image();
     img.decoding = 'async';
     img.onload = () => (img.decode ? img.decode().then(() => resolve(img), () => resolve(img)) : resolve(img));
-    img.onerror = () => reject(new Error(`Failed to load ${src}`));
+    img.onerror = () => {
+      resolve(createProceduralTexture(fallbackType));
+    };
     img.src = src;
   });
 
@@ -101,7 +215,13 @@ export function HeroPourScene() {
   useEffect(() => {
     if (!layout) return;
     let alive = true;
-    Promise.all([loadImage(src.bg), loadImage(src.carton), loadImage(src.glass), loadImage(src.sheen), loadImage(src.front)])
+    Promise.all([
+      loadImage(src.bg, 'bg'),
+      loadImage(src.carton, 'carton'),
+      loadImage(src.glass, 'glass'),
+      loadImage(src.sheen, 'sheen'),
+      loadImage(src.front, 'front'),
+    ])
       .then(([, , , sheen, front]) => {
         if (!alive) return;
         if (!streamRef.current || !interiorRef.current) throw new Error('canvas missing');
@@ -271,6 +391,7 @@ export function HeroPourScene() {
             alt=""
             fetchPriority="high"
             draggable={false}
+            onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
           />
           <img
             className="hero__poster-fg"
@@ -279,6 +400,7 @@ export function HeroPourScene() {
             sizes="(max-width: 700px) 100vw, 96vw"
             alt=""
             draggable={false}
+            onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
           />
           <canvas ref={wipeRef} className="hero__wipe" style={{ display: 'none' }} />
         </div>

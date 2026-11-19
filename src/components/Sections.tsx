@@ -121,6 +121,9 @@ export function SiteFooter() {
         </nav>
       </div>
       <p className="site-footer__note">{footer.note}</p>
+      <div className="site-footer__watermark">
+        <span>Developed by <strong>Shaivika, IIT Technologies</strong></span>
+      </div>
     </footer>
   );
 }
