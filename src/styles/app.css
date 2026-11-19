@@ -326,6 +326,7 @@ p {
   border-radius: var(--radius);
   padding: 10px 12px 14px;
   box-shadow: var(--shadow-soft);
+  z-index: 60;
 }
 .mobile-menu ul {
   list-style: none;
@@ -463,11 +464,16 @@ p {
   bottom: clamp(16px, 4.6%, 34px);
 }
 .hero__supporting {
-  margin: 12px auto 0;
+  margin: 14px auto 0;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ink-2);
+  max-width: min(92%, 460px);
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.85);
+  border: 1px solid rgba(23, 23, 23, 0.14);
 }
 @media (min-width: 1101px) {
   .hero__supporting {
@@ -1225,7 +1231,18 @@ html[data-motion='off'] .gold__stage .gold__drops {
   .site-nav__side {
     gap: 14px;
   }
+  .hero__frame {
+    aspect-ratio: 1.55 / 1;
+  }
 }
+
+@media (max-width: 960px) {
+  .moments__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
 @media (max-width: 860px) {
   :root {
     --header-h: 58px;
@@ -1239,35 +1256,69 @@ html[data-motion='off'] .gold__stage .gold__drops {
     display: none;
   }
   .hero__frame {
-    aspect-ratio: 1.22 / 1;
+    aspect-ratio: 1.25 / 1;
+    border-radius: 20px;
   }
   .hero__cta {
-    left: 14px;
+    left: clamp(14px, 2.5vw, 24px);
+    bottom: clamp(16px, 3.5vw, 24px);
     transform: none;
   }
   .hero__cta:hover,
   .hero__cta:active {
     transform: none;
   }
+  .hero__controls {
+    right: clamp(14px, 2.5vw, 24px);
+    bottom: clamp(16px, 3.5vw, 24px);
+  }
   .gold {
     grid-template-columns: 1fr;
+    text-align: center;
   }
   .gold__copy {
     max-width: none;
+    margin: 0 auto;
+  }
+  .gold__actions {
+    justify-content: center;
   }
   .details__inner {
     grid-template-columns: 1fr;
   }
 }
+
 @media (min-width: 861px) {
   .mobile-menu {
     display: none !important;
   }
 }
+
+@media (max-width: 768px) {
+  .site-footer__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .site-footer nav {
+    margin-left: 0;
+    width: 100%;
+  }
+  .site-footer ul {
+    gap: 10px 18px;
+  }
+  .site-footer__watermark {
+    margin-top: 22px;
+    padding-top: 16px;
+    text-align: center;
+  }
+}
+
 @media (max-width: 760px) {
   .product-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 36px;
+    row-gap: 32px;
+    gap: 14px;
   }
   .products {
     --pack-h: clamp(170px, 44vw, 260px);
@@ -1278,37 +1329,78 @@ html[data-motion='off'] .gold__stage .gold__drops {
     align-content: center;
   }
   .product-card__explore {
-    font-size: clamp(15px, 4.4vw, 20px);
+    font-size: clamp(14px, 4vw, 19px);
     gap: 5px;
   }
-  .moments__grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
   .marquee--brand .marquee__item a {
-    padding: 0 26px;
+    padding: 0 24px;
   }
 }
+
+@media (max-width: 640px) {
+  .moments__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
 @media (max-width: 600px) {
   .hero__frame {
     aspect-ratio: auto;
-    height: clamp(560px, 168vw, 740px);
+    height: clamp(520px, 155vw, 680px);
     max-height: none;
+    border-radius: 18px;
   }
   .hero__cta {
     min-width: 0;
-    padding: 12px 20px;
-    font-size: 16px;
+    left: 12px;
+    bottom: 14px;
+    padding: 11px 18px;
+    font-size: 15px;
+  }
+  .hero__controls {
+    right: 12px;
+    bottom: 14px;
   }
   .hero__controls .pill-btn {
-    padding: 9px 14px 9px 11px;
-    font-size: 13px;
+    padding: 8px 12px 8px 10px;
+    font-size: 12.5px;
+    min-height: 40px;
+  }
+  .gold {
+    padding: 24px 18px;
+    border-radius: 20px;
   }
   .details__facts {
     grid-template-columns: 1fr;
   }
   .strip-pause {
-    width: 54px;
+    width: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn--lg {
+    padding: 12px 24px;
+    font-size: 17px;
+  }
+  .site-footer__watermark {
+    font-size: 12.5px;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-row {
+    grid-template-columns: 1fr;
+    row-gap: 26px;
+  }
+  .product-card__name {
+    font-size: 13.5px;
+  }
+  .product-card__explore {
+    font-size: 14px;
   }
 }
 

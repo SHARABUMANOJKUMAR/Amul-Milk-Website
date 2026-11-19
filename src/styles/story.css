@@ -28,18 +28,42 @@
 
 .hero__peek {
   position: absolute;
-  left: clamp(300px, 27%, 420px);
+  left: clamp(260px, 26vw, 380px);
   bottom: -2px;
-  --girl-h: clamp(92px, 11.5vw, 168px);
-  transition: transform 0.45s var(--ease-out);
+  --girl-h: clamp(92px, 11vw, 160px);
+  transition: transform 0.45s var(--ease-out), left 0.3s ease, bottom 0.3s ease;
   pointer-events: none;
+  z-index: 2;
 }
 .hero__peek.is-ducked {
   transform: translateY(104%);
 }
 @media (max-width: 1100px) {
   .hero__peek {
-    display: none;
+    left: clamp(190px, 23vw, 280px);
+    --girl-h: 112px;
+  }
+}
+@media (max-width: 860px) {
+  .hero__peek {
+    left: clamp(200px, 32vw, 300px);
+    bottom: -2px;
+    --girl-h: 100px;
+  }
+}
+@media (max-width: 600px) {
+  .hero__peek {
+    left: 14px;
+    bottom: 64px;
+    --girl-h: 76px;
+    filter: drop-shadow(0 4px 6px rgba(23, 23, 23, 0.22));
+  }
+}
+@media (max-width: 380px) {
+  .hero__peek {
+    left: 12px;
+    bottom: 58px;
+    --girl-h: 68px;
   }
 }
 
